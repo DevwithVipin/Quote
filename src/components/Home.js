@@ -1,6 +1,8 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useNavigate } from "react-router-dom";
+import {useDispatch} from "react-redux"
+import {update} from "../utils/bookMarkSlice"
 
 import React from 'react'
 import QuoteCard from './QuoteCard';
@@ -8,25 +10,29 @@ import {useState} from "react"
 
 
 function Home() {
-  const [data, setData] = useState(null);
+  const [d, setData] = useState();
+  const dispatch=useDispatch()
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState(""); // State to store the selected dropdown option
 
   const quote = async (option= "") => {
     try {
-      let apiUrl = 'https://api.quotable.io/random';
-      if (option) {
-        apiUrl = `https://api.quotable.io/random?tags=${option}`;
-      }
+      let apiUrl = 'https://api.quotable.io/quotes/random?maxLength=50';
+
+if (option) {
+  apiUrl += `&tags=${option}`;
+}
 
       const response = await fetch(apiUrl);
-      const data = await response.json();
-      setData(data);
+      const d= await response.json();
+      setData(d[0]);
     } catch (error) {
       console.error('Error fetching quote:', error);
     }
   }
-
+  const existingBookmarks = localStorage.getItem('bookmarks');
+  const bookmarks = existingBookmarks ? JSON.parse(existingBookmarks) : [];
+  dispatch(update(bookmarks))
   const handleSelect = (eventKey) => {
     setSelectedOption(eventKey);
    // Call the quote function with the selected option
@@ -40,8 +46,8 @@ function Home() {
   }
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-500 to-purple-500 relative">
-      <QuoteCard data={data?.content} author={data?.author}/>
-      <Dropdown className="white" onSelect={handleSelect}>
+      <QuoteCard data={d?.content} author={d?.author}/>
+      <Dropdown className="red" onSelect={handleSelect}>
         <Dropdown.Toggle variant="success" id="dropdown-basic">
           
         </Dropdown.Toggle>

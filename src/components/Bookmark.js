@@ -1,31 +1,32 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { update } from '../utils/bookMarkSlice';
 import BookmarkQuote from './BookmarkQuote';
 
 function Bookmark() {
   const dispatch = useDispatch();
-  const [bookmarks,setBookmarks]=useState('');
+  const [bookmarks, setBookmarks] = useState([]); // Initialize bookmarks as an array
+
   useEffect(() => {
     const existingBookmarks = localStorage.getItem('bookmarks');
     if (existingBookmarks) {
-      {const bookmarks = JSON.parse(existingBookmarks);
-      setBookmarks(bookmarks)
-    console.log(bookmarks)}
-
-      dispatch(update(bookmarks));
+      const parsedBookmarks = JSON.parse(existingBookmarks);
+      setBookmarks(parsedBookmarks);
     }
-  }, [dispatch]);
-  // const bookmarks = useSelector((store) => store.bookmark);
+  }, []);
+
+  const book = useSelector((store) => store.bookmark.value);
+  console.log(book.length)
+  
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-500 to-purple-500 relative">
-      
-      {bookmarks.length > 0 ? (
-        bookmarks.map((bookmark, index) => (
+      {book.length > 0 ? (
+        book.map((book, index) => (
           <BookmarkQuote
             key={index}
-            data={bookmark.data}
-            author={bookmark.author}
+            data={book.data}
+            author={book.author}
             index={index}
           />
         ))
