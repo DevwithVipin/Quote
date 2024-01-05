@@ -8,26 +8,15 @@ function QuoteCard({data,author}) {
   const [bookmark,setBookmark]=useState()
     const addToBookmark =()=>{
         if (data && author) {
-      // Retrieve existing bookmarks from local storage
       const existingBookmarks = localStorage.getItem('bookmarks');
-
-      // Parse existing bookmarks or initialize an empty array
       const bookmarks = existingBookmarks ? JSON.parse(existingBookmarks) : [];
-     
        setBookmark(bookmarks)
-      // Add new bookmark
       bookmarks.push({ data, author });
-
-
-      // Save updated bookmarks to local storage
       localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-      // alert('Quote added to bookmarks!');
     }
     const existingBookmarks = localStorage.getItem('bookmarks');
-
-      // Parse existing bookmarks or initialize an empty array
       const bookmarks = existingBookmarks ? JSON.parse(existingBookmarks) : [];
-    console.log(bookmark)
+    
     dispatch(update(bookmarks))
 
     }

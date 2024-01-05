@@ -5,7 +5,7 @@ import BookmarkQuote from './BookmarkQuote';
 
 function Bookmark() {
   const dispatch = useDispatch();
-  const [bookmarks, setBookmarks] = useState([]); // Initialize bookmarks as an array
+  const [bookmarks, setBookmarks] = useState([]); 
 
   useEffect(() => {
     const existingBookmarks = localStorage.getItem('bookmarks');
@@ -16,7 +16,7 @@ function Bookmark() {
   }, []);
 
   const book = useSelector((store) => store.bookmark.value);
-  console.log(book.length)
+  
   
 
   return (
