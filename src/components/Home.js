@@ -26,34 +26,28 @@ function Home() {
 
   const quote = async (option = "") => {
     try {
-      let apiUrl = 'https://api.quotable.io/quotes/random?maxLength=50';
-
+       let apiUrl = 'https://api.quotable.io/random';
       if (option) {
-        apiUrl += `&tags=${option}`;
+        apiUrl = `https://api.quotable.io/random?tags=${option}`;
       }
 
       const response = await fetch(apiUrl);
       const data = await response.json();
-      setData(data[0]);
+      setData(data);
     } catch (error) {
       console.error('Error fetching quote:', error);
     }
-  };
-
-  const existingBookmarks = localStorage.getItem('bookmarks');
-  const bookmarks = existingBookmarks ? JSON.parse(existingBookmarks) : [];
-  dispatch(update(bookmarks));
+  }
 
   const handleSelect = (eventKey) => {
     setSelectedOption(eventKey);
-    quote(eventKey);
-  };
-
-  const HomePage = () => {
+   // Call the quote function with the selected option
+   quote(eventKey);
+  }
+  const HomePage = ()=>{
     navigate("/");
-  };
-
-  const Bookmarks = () => {
+  }
+  const Bookmarks = ()=>{
     navigate("/bookmarks");
   };
 
